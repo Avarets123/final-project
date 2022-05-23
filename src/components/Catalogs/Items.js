@@ -1,21 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useFetchWithState from "../../hooks/useFetchWithState";
-import { fetchFunc } from "../../utils";
-
-
-
-
-
 
 const Items = ({ items }) => {
 
 
     const beginState = useFetchWithState('/items');
     const [stateItems, setStateItems] = useState(null);
-    const param = useParams();
-
-
+    const [stateCountOffset, setStateCountOffset] = useState(6)
+    const params = useParams();
 
     useEffect(() => {
         setStateItems(beginState);
@@ -28,11 +21,25 @@ const Items = ({ items }) => {
     }, [items]);
 
 
-    const onAddItems = (e) => {
 
-        const id = param.id ? param.id.slice(1) : undefined;
+    // useEffect(() => {
+
+    //     setStateCountOffset(6)
+    // }, [params])
+
+
+
+    const onAddItems = (e) => {
         e.preventDefault();
-        // fetchFunc('items', (id?))
+        const id = params.categoryId ? params.categoryId.slice(1) : null;
+
+        console.log(id)
+            (async function () {
+                await fetch('http://localhost:7070/api/items' + (id ? `?categoryId=${id}&offset=${stateCountOffset}` : `?offset=${stateCountOffset}`))
+                    .then(res => res.json())
+                    .then(setStateItems)
+                    .then(setStateCountOffset(stateCountOffset + 6));
+            })()
     }
 
 
@@ -64,7 +71,7 @@ const Items = ({ items }) => {
 
             {stateItems.length < 6 ? null : <div className="text-center">
                 <button className="btn btn-outline-primary"
-                    onClick={(e) => onAddItems(e)}
+                // onClick={(e) => onAddItems(e)}
                 >Загрузить ещё</button>
             </div>}
 

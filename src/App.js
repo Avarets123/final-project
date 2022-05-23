@@ -21,8 +21,9 @@ function App() {
         <Route path='/contacts' element={<Contacts />} />
         <Route path='*' element={<ErrorPage />} />
         <Route path='/cart' element={<Cart />} />
+        <Route path='/items:categoryId' element={<Home />} />
 
-        <Route path='/categoryId:id' element={<Home />} />
+
       </Routes>
 
 
