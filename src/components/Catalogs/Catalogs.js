@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import useFetchWithState from "../../hooks/useFetchWithState";
 import { fetchFunc, toggleActiveClass } from "../../utils";
 import Preloader from '../Preloader/Preloader';
 import Items from './Items';
 
-const Catalogs = ({ search }) => {
+const Catalogs = ({ search, }) => {
 
 
     const stateCatalogs = useFetchWithState('/categories');
     const [stateItems, setStateItem] = useState(null);
-    const params = useParams();
-
+    const [stateIdCatalog, setStateIdCatalog] = useState(6)
 
     useEffect(() => {
 
@@ -23,16 +22,13 @@ const Catalogs = ({ search }) => {
 
 
 
-    const onChooseCatalog = () => {
-        // e.preventDefault();
-
-        const id = params.categoryId.slice(1);
+    const onChooseCatalog = (e, id) => {
+        e.preventDefault();
 
 
-        console.log(id)
         fetchFunc('items', (id ? `?categoryId=${id}` : ''), setStateItem);
-        // toggleActiveClass(e);
-        // setStateIdCatalog(id)
+        toggleActiveClass(e);
+        setStateIdCatalog(id)
     }
 
 
@@ -42,8 +38,8 @@ const Catalogs = ({ search }) => {
         <>
             <ul className="catalog-categories nav justify-content-center">
                 <li className="nav-item" key={'all'}>
-                    <NavLink className="nav-link " to={`/items:0`}
-                        onClick={(e) => onChooseCatalog()}
+                    <NavLink className="nav-link active " to={`/`}
+                        onClick={(e) => onChooseCatalog(e)}
                     >Все</NavLink>
                 </li>
 
@@ -52,14 +48,14 @@ const Catalogs = ({ search }) => {
                         <li className="nav-item" key={id}>
                             <NavLink to={`/items:${id}`} key={id}
                                 className="nav-link"
-                                onClick={() => onChooseCatalog()}
+                                onClick={(e) => onChooseCatalog(e, id)}
                             >
                                 {title}</NavLink>
                         </li>
                     );
                 })}
             </ul>
-            {<Items items={stateItems} />}
+            {<Items items={stateItems} idCatalog={stateIdCatalog} />}
 
 
         </>
