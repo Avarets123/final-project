@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import useFetchWithState from "../../hooks/useFetchWithState";
+import Preloader from "../Preloader/Preloader";
 
 const Items = ({ items, idCatalog }) => {
 
@@ -40,7 +42,7 @@ const Items = ({ items, idCatalog }) => {
 
 
 
-    if (!stateItems) return null
+    if (!stateItems) return <Preloader />
 
     return (
 
@@ -56,7 +58,7 @@ const Items = ({ items, idCatalog }) => {
                                 <div className="card-body">
                                     <p className="card-text">{title}</p>
                                     <p className="card-text">{price} руб.</p>
-                                    <a href="/products/1.html" className="btn btn-outline-primary">Заказать</a>
+                                    <Link to={`/catalog/${id}`} className="btn btn-outline-primary">Заказать</Link>
                                 </div>
                             </div>
                         </div>

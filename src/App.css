@@ -1,0 +1,12 @@
+.catalog-item-size {
+  cursor: pointer;
+  margin-left: 5px;
+  margin-right: 3px;
+}
+
+.catalog-item-size.selected {
+  background: #727e86;
+  padding: 2px;
+  border-radius: 15px;
+  color: #fff;
+}

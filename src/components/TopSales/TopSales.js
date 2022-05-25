@@ -1,4 +1,6 @@
+import { Link } from "react-router-dom";
 import useFetchWithState from "../../hooks/useFetchWithState";
+import Preloader from "../Preloader/Preloader";
 
 
 const TopSales = () => {
@@ -8,7 +10,7 @@ const TopSales = () => {
 
 
 
-    if (!stateTopSales) return null
+    if (!stateTopSales) return <Preloader />
     return (
         stateTopSales.map(({ price, id, images, title }) => {
             return (
@@ -19,7 +21,7 @@ const TopSales = () => {
                         <div className="card-body">
                             <p className="card-text">{title}</p>
                             <p className="card-text">{price} руб.</p>
-                            <a href="/products/1.html" className="btn btn-outline-primary">Заказать</a>
+                            <Link to={`/catalog/${id}`} className="btn btn-outline-primary">Заказать</Link>
                         </div>
                     </div>
                 </div>
