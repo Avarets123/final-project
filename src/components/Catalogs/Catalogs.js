@@ -5,27 +5,28 @@ import { fetchFunc, toggleActiveClass } from "../../utils";
 import Preloader from '../Preloader/Preloader';
 import Items from './Items';
 
-const Catalogs = ({ search, }) => {
+const Catalogs = ({ search, idCatalog }) => {
 
 
     const stateCatalogs = useFetchWithState('/categories');
     const [stateItems, setStateItem] = useState(null);
-    const [stateIdCatalog, setStateIdCatalog] = useState(6)
+    const [stateIdCatalog, setStateIdCatalog] = useState(null)
+
+    useEffect(() => {
+        setStateItem(search)
+    }, [search]);
+
 
     useEffect(() => {
 
-        setStateItem(search)
-
-    }, [search])
-
+        if (idCatalog) idCatalog(stateIdCatalog)
+    }, [idCatalog, stateIdCatalog])
 
 
 
 
     const onChooseCatalog = (e, id) => {
         e.preventDefault();
-
-
         fetchFunc('items', (id ? `?categoryId=${id}` : ''), setStateItem);
         toggleActiveClass(e);
         setStateIdCatalog(id)
@@ -55,7 +56,7 @@ const Catalogs = ({ search, }) => {
                     );
                 })}
             </ul>
-            {<Items items={stateItems} idCatalog={stateIdCatalog} />}
+            {<Items items={stateItems} catalogId={stateIdCatalog} />}
 
 
         </>

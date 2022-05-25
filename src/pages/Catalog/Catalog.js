@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Catalogs from "../../components/Catalogs/Catalogs";
-import { fetchFunc } from "../../utils";
 
 const Catalog = () => {
     const [searchParams] = useSearchParams()
@@ -9,6 +8,7 @@ const Catalog = () => {
 
     const [stateInput, setStateInput] = useState('');
     const [stateSearch, setStateSearch] = useState(null);
+    const [stateIdCatalog, setStateIdCatalog] = useState(null);
 
     useEffect(() => {
         setStateInput(searchParams.getAll('value'))
@@ -16,13 +16,20 @@ const Catalog = () => {
 
 
 
-    const onSearch = (e) => {
-        e.preventDefault();
+    const onSearch = async (e) => {
+        if (e) e.preventDefault();
 
-        fetchFunc('items', `?q=${stateInput}`, setStateSearch);
 
+        const req = await fetch('http://localhost:7070/api/items' + (stateIdCatalog ? `?categoryId=${stateIdCatalog}&q=${stateInput}` : `?q=${stateInput}`));
+
+        const res = await req.json();
+        setStateSearch(res)
+
+        console.log(res)
 
     }
+
+
 
 
 
@@ -45,9 +52,10 @@ const Catalog = () => {
                                 <input className="form-control" placeholder="Поиск"
                                     value={stateInput}
                                     onChange={(e) => setStateInput(e.target.value)}
+                                    onBlur={() => onSearch()}
                                 />
                             </form>
-                            <Catalogs search={stateSearch} />
+                            <Catalogs search={stateSearch} idCatalog={setStateIdCatalog} />
                         </section>
                     </div>
                 </div>

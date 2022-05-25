@@ -2,11 +2,10 @@ import { useRef } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useFetchWithState from "../../hooks/useFetchWithState";
 import { addData } from '../../reducer/cartStore';
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const Product = () => {
     const params = useParams();
-    const store = useSelector(store => store.cartStore);
     const dispatch = useDispatch();
     const nav = useNavigate();
 
@@ -70,8 +69,8 @@ const Product = () => {
 
         dispatch(addData(data))
 
-        console.log(store)
-        nav('/cart')
+
+        if (size) nav('/cart')
 
     }
 

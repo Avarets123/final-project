@@ -3,12 +3,15 @@ import { Link } from "react-router-dom";
 import useFetchWithState from "../../hooks/useFetchWithState";
 import Preloader from "../Preloader/Preloader";
 
-const Items = ({ items, idCatalog }) => {
+const Items = ({ items, catalogId }) => {
 
 
     const beginState = useFetchWithState('/items');
     const [stateItems, setStateItems] = useState(null);
     const [stateCountOffset, setStateCountOffset] = useState(6)
+
+
+
 
     useEffect(() => {
         setStateItems(beginState);
@@ -25,14 +28,14 @@ const Items = ({ items, idCatalog }) => {
     useEffect(() => {
 
         setStateCountOffset(6)
-    }, [idCatalog])
+    }, [catalogId])
 
 
 
     const onAddItems = (e) => {
         e.preventDefault();
         (async function () {
-            await fetch('http://localhost:7070/api/items' + (idCatalog ? `?categoryId=${idCatalog}&offset=${stateCountOffset}` : `?offset=${stateCountOffset}`))
+            await fetch('http://localhost:7070/api/items' + (catalogId ? `?categoryId=${catalogId}&offset=${stateCountOffset}` : `?offset=${stateCountOffset}`))
                 .then(res => res.json())
                 .then(setStateItems)
                 .then(setStateCountOffset(stateCountOffset + 6));
